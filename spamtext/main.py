@@ -1,22 +1,48 @@
 import pyautogui as spam
 import time
+from pynput import keyboard
 
-message = input("mau chat apa : ")
+print("Note: Click tombol 'Esc' untuk menghentikan proses kapan saja.")
+print("\n")
+message = input("Mau chat apa: ")
 
-count = 0
-limit = int(input("mau berapa : "))
+while True:
+    try:
+        limit = int(input("Mau berapa: "))
+        if limit <= 0:
+            print("Masukkan angka lebih dari 0!")
+            continue
+        break
+    except ValueError:
+        print("Masukkan angka yang bener!")
 
-print("bakal ngespam dalam waktu:")
-for i in range(7, 0, -1): 
-    print(f"\r{i}", end="", flush=True) 
+print("Bakal ngespam dalam waktu:")
+for i in range(7, 0, -1):
+    print(f"\r{i}", end="", flush=True)
     time.sleep(1)
 
-print("\n") 
-time.sleep(2) 
+print("\nMulai mengirim pesan...\n")
 
-while count < int(limit):
-    count += 1
-    if count > limit:
-        break
-    spam.typewrite(message)
-    spam.press("enter")
+count = 0
+stop_spam = False
+
+def on_press(key):
+    global stop_spam
+    if key == keyboard.Key.esc:
+        stop_spam = True
+        return False 
+
+listener = keyboard.Listener(on_press=on_press)
+listener.start()
+
+try:
+    while count < limit:
+        if stop_spam:
+            print("\nProses dihentikan oleh pengguna.")
+            break
+        spam.typewrite(message)
+        spam.press("enter")
+        count += 1
+        time.sleep(0.5)
+except KeyboardInterrupt:
+    print("\nProses dihentikan oleh pengguna.")
