@@ -16,11 +16,12 @@ while True:
     except ValueError:
         print("Masukkan angka yang bener!")
 
+print("\n")
 print("Bakal ngespam dalam waktu:")
 for i in range(7, 0, -1):
     print(f"\r{i}", end="", flush=True)
     time.sleep(1)
-
+print("\n")
 print("\nMulai mengirim pesan...\n")
 
 count = 0
@@ -43,6 +44,8 @@ try:
         spam.typewrite(message)
         spam.press("enter")
         count += 1
-        time.sleep(0.5)
+        time.sleep(0)
+    else:
+        print("\nText sudah berhasil terkirim semua!")
 except KeyboardInterrupt:
     print("\nProses dihentikan oleh pengguna.")
